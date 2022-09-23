@@ -1,7 +1,23 @@
+import java.io.File;
+
 public class Main {
 	public static void main(String[] args) {
-		String inputFilePath = "C:\\Users\\leonr\\tmp\\test.asm";
-		String outputFilePath = "C:\\Users\\leonr\\tmp\\test.asm.obj";
+		if (args.length != 2) {
+			System.out.println("Invalid syntax! Correct arguments: [inputFilePath] [outputFilePath]");
+			System.exit(1);
+			return;
+		}
+
+		String inputFilePath = args[0];
+
+		if (!new File(inputFilePath).exists()) {
+			System.out.println("The input file specified does not exist.");
+			System.exit(1);
+			return;
+		}
+
+		String outputFilePath = args[1];
+
 		Reader.startReading(inputFilePath);
 		Output.writeOutput(outputFilePath);
 	}
