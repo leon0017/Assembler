@@ -1,3 +1,7 @@
+package me.leonrobi;
+
+import me.leonrobi.opcodes.NOP;
+
 import java.io.File;
 
 public class Main {
@@ -15,6 +19,8 @@ public class Main {
 			System.exit(1);
 			return;
 		}
+
+		Opcode.add(new NOP());
 
 		String outputFilePath = args[1];
 

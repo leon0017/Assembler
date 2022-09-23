@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Leon" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="Main" />
+    <option name="MAIN_CLASS_NAME" value="me.leonrobi.Main" />
     <module name="Assembler" />
     <option name="PROGRAM_PARAMETERS" value="C:\Users\leonr\tmp\test.asm C:\Users\leonr\tmp\test.asm.obj" />
     <method v="2">
