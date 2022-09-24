@@ -5,6 +5,12 @@ import java.util.List;
 
 public class Parser {
 	public static long currentByteOffset = 0x0;
+	public static int bits = 16;
+	private static final List<Byte> emptyBytes = new ArrayList<>();
+
+	static {
+		emptyBytes.add((byte)0x00);
+	}
 
 	private static void removeComments(ModifiableString modString) {
 		String string = modString.string();
@@ -52,28 +58,43 @@ public class Parser {
 		modString.string(builder.toString());
 	}
 
-	private static List<Byte> handleOpcode(ModifiableString modString, int lineNumber) {
-		String originalString = modString.string();
-		String opcodeToCompare = originalString.split(" ")[0].toLowerCase();
-		Opcode opcode = Opcode.searchForOpcode(opcodeToCompare);
+	private enum HandleOpcodeResultEnum {
+		FAILED,
+		SUCCESS,
+		LABEL;
+	}
 
-		if (opcode == null) {
+	private record HandleOpcodeResult(HandleOpcodeResultEnum result, List<Byte> bytes) {}
+
+	private static HandleOpcodeResult handleOpcode(ModifiableString modString, int lineNumber) {
+		String originalString = modString.string();
+		String opcodeToCompare = originalString.split(" ")[0];
+		Opcode opcode = Opcode.searchForOpcode(opcodeToCompare.toLowerCase());
+
+		boolean opcodeNull = opcode == null;
+
+		if (opcodeToCompare.endsWith(":") && opcodeNull) {
+			Label.add(new Label(opcodeToCompare.substring(opcodeToCompare.length()-1), currentByteOffset));
+			return new HandleOpcodeResult(HandleOpcodeResultEnum.LABEL, null);
+		}
+
+		if (opcodeNull) {
 			System.out.println("ERROR on line " + lineNumber + " - Unknown opcode \"" + opcodeToCompare + "\"");
 			System.exit(1);
-			return null;
+			return new HandleOpcodeResult(HandleOpcodeResultEnum.FAILED, null);
 		}
 
 		List<Byte> bytes;
 
 		try {
-			bytes = new ArrayList<>(opcode.handler(originalString));
+			bytes = opcode.handler(originalString);
 		} catch (SyntaxException e) {
 			System.out.println("ERROR on line " + lineNumber + " - \"" + e.getMessage() + "\"");
 			System.exit(1);
-			return null;
+			return new HandleOpcodeResult(HandleOpcodeResultEnum.FAILED, null);
 		}
 
-		return bytes;
+		return new HandleOpcodeResult(HandleOpcodeResultEnum.SUCCESS, bytes);
 	}
 
 	public static void parseLine(String lineContent, int lineNumber) {
@@ -84,8 +105,17 @@ public class Parser {
 			return;
 		removeStartSpaces(modString);
 
-		List<Byte> bytes = handleOpcode(modString, lineNumber);
-		Output.addOutput(bytes, modString.string());
-		currentByteOffset += bytes.size();
+		HandleOpcodeResult result = handleOpcode(modString, lineNumber);
+		if (result.result == HandleOpcodeResultEnum.FAILED)
+			return;
+		List<Byte> bytes = result.bytes;
+		if (result.result == HandleOpcodeResultEnum.LABEL || bytes == null)
+			bytes = emptyBytes;
+		for (byte c : bytes)
+			System.out.println(" " + String.format("%08x", Parser.currentByteOffset) + "  " + String.format("%x", (long)(c & 0xff)) + "                " + modString.string());
+		if (!bytes.equals(emptyBytes)) {
+			Output.addOutput(bytes);
+			currentByteOffset += bytes.size();
+		}
 	}
 }

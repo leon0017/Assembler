@@ -1,5 +1,6 @@
 package me.leonrobi;
 
+import me.leonrobi.opcodes.BITS;
 import me.leonrobi.opcodes.NOP;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class Main {
 		}
 
 		Opcode.add(new NOP());
+		Opcode.add(new BITS());
 
 		String outputFilePath = args[1];
 

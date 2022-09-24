@@ -9,9 +9,7 @@ import java.util.List;
 public class Output {
 	private static final List<Byte> bytes = new ArrayList<>();
 
-	public static void addOutput(List<Byte> toAdd, String originalLine) {
-		for (byte c : toAdd)
-			System.out.println(" " + String.format("%08x", Parser.currentByteOffset) + "  " + String.format("%x", (long)(c & 0xff)) + "                " + originalLine);
+	public static void addOutput(List<Byte> toAdd) {
 		bytes.addAll(toAdd);
 	}
 
