@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Output {
-	private static final List<Byte> bytes = new ArrayList<>();
+	public static final List<Byte> bytes = new ArrayList<>();
 
 	public static void addOutput(List<Byte> toAdd) {
 		bytes.addAll(toAdd);

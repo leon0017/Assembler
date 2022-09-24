@@ -65,12 +65,12 @@ public class Parser {
 			return 0;
 		List<Byte> bytes = result.bytes;
 		if (result.result == HandleOpcodeResultEnum.LABEL || bytes == null)
-			bytes = emptyBytes;
+			return 0;
 		if (writeToOutput) {
-			for (byte c : bytes)
-				System.out.println(" " + String.format("%08x", Parser.currentByteOffset) + "  " + String.format("%x", (long) (c & 0xff)) + "                " + modString.string());
-		}
-		if (!bytes.equals(emptyBytes) && writeToOutput) {
+			for (byte c : bytes) {
+				if (Main.doneFirstParse)
+					System.out.println(" " + String.format("%08x", Parser.currentByteOffset) + "  " + String.format("%x", (long) (c & 0xff)) + "                " + modString.string());
+			}
 			Output.addOutput(bytes);
 			currentByteOffset += bytes.size();
 		}

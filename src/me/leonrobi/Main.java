@@ -5,6 +5,7 @@ import me.leonrobi.opcodes.*;
 import java.io.File;
 
 public class Main {
+	public static boolean doneFirstParse = false;
 	public static void main(String[] args) {
 		if (args.length != 2) {
 			System.out.println("Invalid syntax! Correct arguments: [inputFilePath] [outputFilePath]");
@@ -28,8 +29,15 @@ public class Main {
 		Opcode.add(new JMP());
 		Opcode.add(new MOV());
 		Opcode.add(new INT());
+		Opcode.add(new CMP());
 
 		String outputFilePath = args[1];
+
+		Reader.startReading(inputFilePath);
+		doneFirstParse = true;
+		Parser.currentByteOffset = 0;
+		Output.bytes.clear();
+		Reader.lines.clear();
 
 		Reader.startReading(inputFilePath);
 		Output.writeOutput(outputFilePath);

@@ -87,9 +87,9 @@ public class JMP extends Opcode {
 			byte offsetByte = (byte) (offset & 0xff);
 			bytes.add(jmpType.getShortJumpOpcode());
 			if (offset <= 0) // Backwards OR same location
-				bytes.add((byte)((0xff + offsetByte) - 0x1));
+				bytes.add((byte)((0xff + offsetByte - 0x1)));
 			else
-				bytes.add(offsetByte);
+				bytes.add((byte) (offsetByte - 0x2));
 			return bytes;
 		} else {
 			throw new SyntaxException("Further jumps are not supported yet.");
