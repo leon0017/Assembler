@@ -1,7 +1,6 @@
 package me.leonrobi.opcodes;
 
 import me.leonrobi.Opcode;
-import me.leonrobi.SyntaxException;
 
 import java.util.ArrayList;
 import java.util.List;

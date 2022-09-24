@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
+	public static long currentByteOffset = 0x0;
+
 	private static void removeComments(ModifiableString modString) {
 		String string = modString.string();
 
@@ -82,6 +84,8 @@ public class Parser {
 			return;
 		removeStartSpaces(modString);
 
-		Output.addOutput(handleOpcode(modString, lineNumber));
+		List<Byte> bytes = handleOpcode(modString, lineNumber);
+		Output.addOutput(bytes, modString.string());
+		currentByteOffset += bytes.size();
 	}
 }
