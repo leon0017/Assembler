@@ -27,6 +27,7 @@ public class Main {
 		Opcode.add(new AAA());
 		Opcode.add(new JMP());
 		Opcode.add(new MOV());
+		Opcode.add(new INT());
 
 		String outputFilePath = args[1];
 
