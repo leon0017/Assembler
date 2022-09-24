@@ -10,8 +10,8 @@ import java.util.List;
 public class INT extends Opcode {
 
 	@Override
-	public String identifier() {
-		return "int";
+	public String[] identifiers() {
+		return new String[]{"int"};
 	}
 
 	@Override

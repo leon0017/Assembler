@@ -8,8 +8,8 @@ import java.util.List;
 public class HLT extends Opcode {
 
 	@Override
-	public String identifier() {
-		return "hlt";
+	public String[] identifiers() {
+		return new String[]{"hlt"};
 	}
 
 	@Override

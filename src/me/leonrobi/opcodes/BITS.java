@@ -9,8 +9,8 @@ import java.util.List;
 public class BITS extends Opcode {
 
 	@Override
-	public String identifier() {
-		return "bits";
+	public String[] identifiers() {
+		return new String[]{"bits"};
 	}
 
 	@Override

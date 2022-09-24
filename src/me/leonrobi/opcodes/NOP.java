@@ -8,8 +8,8 @@ import java.util.List;
 public class NOP extends Opcode {
 
 	@Override
-	public String identifier() {
-		return "nop";
+	public String[] identifiers() {
+		return new String[]{"nop"};
 	}
 
 	@Override

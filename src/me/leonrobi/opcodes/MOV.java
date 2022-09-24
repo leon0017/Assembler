@@ -11,8 +11,8 @@ import java.util.List;
 public class MOV extends Opcode {
 
 	@Override
-	public String identifier() {
-		return "mov";
+	public String[] identifiers() {
+		return new String[]{"mov"};
 	}
 
 	@Override

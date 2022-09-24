@@ -7,7 +7,7 @@ public abstract class Opcode {
 
 	private static final List<Opcode> opcodes = new ArrayList<>();
 
-	public abstract String identifier();
+	public abstract String[] identifiers();
 
 	public abstract List<Byte> handler(String lineContent, int lineNumber) throws SyntaxException;
 
@@ -17,8 +17,11 @@ public abstract class Opcode {
 
 	public static Opcode searchForOpcode(String opcodeToRead) {
 		for (Opcode opcode : opcodes) {
-			if (opcode.identifier().equals(opcodeToRead))
-				return opcode;
+			for (String identifier : opcode.identifiers()) {
+				if (identifier.equals(opcodeToRead)) {
+					return opcode;
+				}
+			}
 		}
 		return null;
 	}

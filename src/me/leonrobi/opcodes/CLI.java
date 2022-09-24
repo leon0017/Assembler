@@ -8,8 +8,8 @@ import java.util.List;
 public class CLI extends Opcode {
 
 	@Override
-	public String identifier() {
-		return "cli";
+	public String[] identifiers() {
+		return new String[]{"cli"};
 	}
 
 	@Override
