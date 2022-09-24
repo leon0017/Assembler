@@ -12,56 +12,10 @@ public class Parser {
 		emptyBytes.add((byte)0x00);
 	}
 
-	private static void removeComments(ModifiableString modString) {
-		String string = modString.string();
-
-		StringBuilder builder = new StringBuilder(string);
-		char[] chars = string.toCharArray();
-
-		for (int i = 0; i < chars.length; i++) {
-			char chr = chars[i];
-			if (chr == '#') {
-				builder.setLength(i);
-				break;
-			}
-		}
-
-		modString.string(builder.toString());
-	}
-
-	private static boolean isEmptyLine(ModifiableString modString) {
-		String string = modString.string();
-
-		if (string.isEmpty())
-			return true;
-		char[] chars = string.toCharArray();
-		for (char chr : chars) {
-			if (chr != ' ' && chr != '\t')
-				return false;
-		}
-
-		return true;
-	}
-
-	private static void removeStartSpaces(ModifiableString modString) {
-		String string = modString.string();
-		StringBuilder builder = new StringBuilder();
-
-		char[] chars = string.toCharArray();
-		int i = 0;
-
-		while (chars[i] == ' ' || chars[i] == '\t')
-			++i;
-		for (int j = i; j < chars.length; j++)
-			builder.append(chars[j]);
-
-		modString.string(builder.toString());
-	}
-
 	private enum HandleOpcodeResultEnum {
 		FAILED,
 		SUCCESS,
-		LABEL;
+		LABEL
 	}
 
 	private record HandleOpcodeResult(HandleOpcodeResultEnum result, List<Byte> bytes) {}
@@ -87,7 +41,7 @@ public class Parser {
 		List<Byte> bytes;
 
 		try {
-			bytes = opcode.handler(originalString);
+			bytes = opcode.handler(originalString, lineNumber);
 		} catch (SyntaxException e) {
 			System.out.println("ERROR on line " + lineNumber + " - \"" + e.getMessage() + "\"");
 			System.exit(1);
@@ -97,25 +51,26 @@ public class Parser {
 		return new HandleOpcodeResult(HandleOpcodeResultEnum.SUCCESS, bytes);
 	}
 
-	public static void parseLine(String lineContent, int lineNumber) {
-		ModifiableString modString = new ModifiableString(lineContent);
+	public static long parseLine(String lineContent, int lineNumber, boolean writeToOutput) {
+		if (lineContent.equals(""))
+			return 0;
 
-		removeComments(modString);
-		if (isEmptyLine(modString))
-			return;
-		removeStartSpaces(modString);
+		ModifiableString modString = new ModifiableString(lineContent);
 
 		HandleOpcodeResult result = handleOpcode(modString, lineNumber);
 		if (result.result == HandleOpcodeResultEnum.FAILED)
-			return;
+			return 0;
 		List<Byte> bytes = result.bytes;
 		if (result.result == HandleOpcodeResultEnum.LABEL || bytes == null)
 			bytes = emptyBytes;
-		for (byte c : bytes)
-			System.out.println(" " + String.format("%08x", Parser.currentByteOffset) + "  " + String.format("%x", (long)(c & 0xff)) + "                " + modString.string());
-		if (!bytes.equals(emptyBytes)) {
+		if (writeToOutput) {
+			for (byte c : bytes)
+				System.out.println(" " + String.format("%08x", Parser.currentByteOffset) + "  " + String.format("%x", (long) (c & 0xff)) + "                " + modString.string());
+		}
+		if (!bytes.equals(emptyBytes) && writeToOutput) {
 			Output.addOutput(bytes);
 			currentByteOffset += bytes.size();
 		}
+		return bytes.size();
 	}
 }

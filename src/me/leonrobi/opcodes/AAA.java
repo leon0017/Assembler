@@ -5,17 +5,17 @@ import me.leonrobi.Opcode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CLI extends Opcode {
+public class AAA extends Opcode {
 
 	@Override
 	public String identifier() {
-		return "cli";
+		return "aaa";
 	}
 
 	@Override
 	public List<Byte> handler(String lineContent, int lineNumber) {
 		List<Byte> bytes = new ArrayList<>();
-		bytes.add((byte) 0xFA);
+		bytes.add((byte) 0x37);
 		return bytes;
 	}
 }

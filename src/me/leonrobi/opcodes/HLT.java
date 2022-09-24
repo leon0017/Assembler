@@ -13,7 +13,7 @@ public class HLT extends Opcode {
 	}
 
 	@Override
-	public List<Byte> handler(String lineContent) {
+	public List<Byte> handler(String lineContent, int lineNumber) {
 		List<Byte> bytes = new ArrayList<>();
 		bytes.add((byte) 0xF4);
 		return bytes;

@@ -13,7 +13,7 @@ public class NOP extends Opcode {
 	}
 
 	@Override
-	public List<Byte> handler(String lineContent) {
+	public List<Byte> handler(String lineContent, int lineNumber) {
 		List<Byte> characters = new ArrayList<>();
 		byte c = (byte) 0x90;
 		characters.add(c);

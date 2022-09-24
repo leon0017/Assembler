@@ -14,7 +14,7 @@ public class BITS extends Opcode {
 	}
 
 	@Override
-	public List<Byte> handler(String lineContent) throws SyntaxException {
+	public List<Byte> handler(String lineContent, int lineNumber) throws SyntaxException {
 		String bits = lineContent.substring(5);
 		switch (bits) {
 			case "16" -> Parser.bits = 16;

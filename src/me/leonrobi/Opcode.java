@@ -9,7 +9,7 @@ public abstract class Opcode {
 
 	public abstract String identifier();
 
-	public abstract List<Byte> handler(String lineContent) throws SyntaxException;
+	public abstract List<Byte> handler(String lineContent, int lineNumber) throws SyntaxException;
 
 	public static void add(Opcode opcode) {
 		opcodes.add(opcode);

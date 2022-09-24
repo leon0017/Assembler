@@ -1,9 +1,6 @@
 package me.leonrobi;
 
-import me.leonrobi.opcodes.BITS;
-import me.leonrobi.opcodes.CLI;
-import me.leonrobi.opcodes.HLT;
-import me.leonrobi.opcodes.NOP;
+import me.leonrobi.opcodes.*;
 
 import java.io.File;
 
@@ -27,6 +24,8 @@ public class Main {
 		Opcode.add(new BITS());
 		Opcode.add(new CLI());
 		Opcode.add(new HLT());
+		Opcode.add(new AAA());
+		Opcode.add(new JMP());
 
 		String outputFilePath = args[1];
 
