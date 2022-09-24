@@ -30,6 +30,8 @@ public class Main {
 		Opcode.add(new MOV());
 		Opcode.add(new INT());
 		Opcode.add(new CMP());
+		Opcode.add(new DB());
+		Opcode.add(new UNTIL());
 
 		String outputFilePath = args[1];
 

@@ -1,16 +1,10 @@
 package me.leonrobi;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
 	public static long currentByteOffset = 0x0;
 	public static int bits = 16;
-	private static final List<Byte> emptyBytes = new ArrayList<>();
-
-	static {
-		emptyBytes.add((byte)0x00);
-	}
 
 	private enum HandleOpcodeResultEnum {
 		FAILED,
@@ -77,14 +71,19 @@ public class Parser {
 		return bytes.size();
 	}
 
-	public static byte parseByte(String byteString) throws NumberFormatException {
+	public static int parseInt(String intString) throws NumberFormatException {
 		int parsed;
-		if (byteString.startsWith("0x"))
-			parsed = Integer.parseInt(byteString.substring(2), 16);
-		else if (byteString.startsWith("0b"))
-			parsed = Integer.parseInt(byteString.substring(2), 2);
+		if (intString.startsWith("0x"))
+			parsed = Integer.parseInt(intString.substring(2), 16);
+		else if (intString.startsWith("0b"))
+			parsed = Integer.parseInt(intString.substring(2), 2);
 		else
-			parsed = Integer.parseInt(byteString, 10);
+			parsed = Integer.parseInt(intString, 10);
+		return parsed;
+	}
+
+	public static byte parseByte(String byteString) throws NumberFormatException {
+		int parsed = parseInt(byteString);
 		if (parsed > 0xFF)
 			throw new NumberFormatException("Byte out of range.");
 		return (byte)parsed;
