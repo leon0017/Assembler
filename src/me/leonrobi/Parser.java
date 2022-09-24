@@ -76,4 +76,18 @@ public class Parser {
 		}
 		return bytes.size();
 	}
+
+	public static byte parseByte(String byteString) throws NumberFormatException {
+		int parsed;
+		if (byteString.startsWith("0x"))
+			parsed = Integer.parseInt(byteString.substring(2), 16);
+		else if (byteString.startsWith("0b"))
+			parsed = Integer.parseInt(byteString.substring(2), 2);
+		else
+			parsed = Integer.parseInt(byteString, 10);
+		if (parsed > 0xFF)
+			throw new NumberFormatException("Byte out of range.");
+		return (byte)parsed;
+	}
+
 }

@@ -26,6 +26,7 @@ public class Main {
 		Opcode.add(new HLT());
 		Opcode.add(new AAA());
 		Opcode.add(new JMP());
+		Opcode.add(new MOV());
 
 		String outputFilePath = args[1];
 
