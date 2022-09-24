@@ -28,7 +28,10 @@ public class Parser {
 		boolean opcodeNull = opcode == null;
 
 		if (opcodeToCompare.endsWith(":") && opcodeNull) {
-			Label.add(new Label(opcodeToCompare.substring(opcodeToCompare.length()-1), currentByteOffset));
+			StringBuilder labelNameBuilder = new StringBuilder(opcodeToCompare);
+			labelNameBuilder.setLength(opcodeToCompare.length()-1);
+			String labelName = labelNameBuilder.toString();
+			Label.add(new Label(labelName, currentByteOffset));
 			return new HandleOpcodeResult(HandleOpcodeResultEnum.LABEL, null);
 		}
 

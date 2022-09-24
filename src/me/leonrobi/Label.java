@@ -7,16 +7,20 @@ public record Label(String name, long byteOffset) {
 	public static final List<Label> labels = new ArrayList<>();
 
 	public static void add(Label label) {
-		for (Label l : labels)
-			if (l.name.equals(label.name))
+		for (Label l : labels) {
+			if (l.name.equals(label.name)) {
 				return;
+			}
+		}
 		labels.add(label);
 	}
 
 	public static Label get(String name, int startingLine) {
-		for (Label label : labels)
-			if (label.name.equals(name))
+		for (Label label : labels) {
+			if (label.name.equals(name)) {
 				return label;
+			}
+		}
 		// Label is not yet processed OR label does not exist.
 		int lineNumber = -1;
 		for (int i = startingLine; i < Reader.lines.size(); i++) {
