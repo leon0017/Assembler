@@ -57,9 +57,16 @@ public class DestSrcInstructionHelper {
 
 		if (sourceRegister == null) {
 			List<Byte> _bytes = null;
+			boolean doSpecialByteOperation = false;
+			if (shorterByteOperation) {
+				if (register.sizeBits() == 16)
+					doSpecialByteOperation = s <= 127 && s >= -127;
+				else if (register.sizeBits() == 32)
+					doSpecialByteOperation = i <= 127 && i >= -127;
+			}
 			switch (type) {
 				case MOV -> _bytes = register.getMovRegFromValBytes();
-				case CMP -> _bytes = register.getCmpRegFromValBytes();
+				case CMP -> _bytes = register.getCmpRegFromValBytes(doSpecialByteOperation);
 			}
 			if (_bytes == null)
 				throw new SyntaxException("Register '" + register + "' does not support this operation.");
@@ -73,13 +80,23 @@ public class DestSrcInstructionHelper {
 				if (Parser.bits == 32 || Parser.bits == 64)
 					__bytes.add((byte)0x66);
 				__bytes.addAll(bytes);
-				bytes = Parser.addShortToByteList(s, __bytes);
+				if (doSpecialByteOperation) {
+					__bytes.add((byte) s);
+					bytes = __bytes;
+				} else {
+					bytes = Parser.addShortToByteList(s, __bytes);
+				}
 			} else if (register.sizeBits() == 32) {
 				List<Byte> __bytes = new ArrayList<>();
 				if (Parser.bits == 16)
 					__bytes.add((byte)0x66);
 				__bytes.addAll(bytes);
-				bytes = Parser.addIntToByteList(i, __bytes);
+				if (doSpecialByteOperation) {
+					__bytes.add((byte) i);
+					bytes = __bytes;
+				} else {
+					bytes = Parser.addIntToByteList(i, __bytes);
+				}
 			}
 		} else {
 			throw new SyntaxException("Having a register as a source operand is not yet supported.");

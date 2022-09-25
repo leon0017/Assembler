@@ -1,5 +1,6 @@
 package me.leonrobi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public enum Register {
@@ -62,8 +63,13 @@ public enum Register {
 		return this.movRegFromValBytes;
 	}
 
-	public List<Byte> getCmpRegFromValBytes() {
-		return this.cmpRegFromValBytes;
+	public List<Byte> getCmpRegFromValBytes(boolean doSpecialByteOperation) {
+		if (!doSpecialByteOperation)
+			return this.cmpRegFromValBytes;
+		List<Byte> bytes = new ArrayList<>();
+		bytes.add((byte)0x83);
+		bytes.add((byte)(0xf8 + offset));
+		return bytes;
 	}
 
 	public int getOffset() {

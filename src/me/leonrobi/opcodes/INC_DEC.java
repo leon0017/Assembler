@@ -22,7 +22,7 @@ public class INC_DEC extends Opcode {
 			bytes.add((byte)0xfe);
 		if (register.sizeBits() == 32 && Parser.bits == 16)
 			bytes.add((byte)0x66);
-		if (register.sizeBits() == 16 && Parser.bits == 32)
+		if (register.sizeBits() == 16 && Parser.bits != 16)
 			bytes.add((byte)0x66);
 
 		if (register.getOffset() == -1)
