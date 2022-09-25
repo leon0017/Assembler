@@ -34,6 +34,7 @@ public class CMP extends Opcode {
 		Register otherRegister = null;
 		byte b = 0;
 		short s = 0;
+		int i = 0;
 		try {
 			otherRegister = Register.valueOf(source.toUpperCase());
 			if (otherRegister.sizeBits() != register.sizeBits())
@@ -44,6 +45,8 @@ public class CMP extends Opcode {
 					b = Parser.parseByte(source);
 				else if (register.sizeBits() == 16)
 					s = Parser.parseShort(source);
+				else if (register.sizeBits() == 32)
+					i = Parser.parseInt(source);
 			} catch (NumberFormatException nfe) {
 				throw new SyntaxException("Failed to parse register/value for '" + source + "'");
 			}
@@ -62,6 +65,12 @@ public class CMP extends Opcode {
 					newBytes.add((byte)0x66);
 				newBytes.addAll(bytes);
 				bytes = Parser.addShortToByteList(s, newBytes);
+			} else if (register.sizeBits() == 32) {
+				List<Byte> newBytes = new ArrayList<>();
+				if (Parser.bits == 16)
+					newBytes.add((byte)0x66);
+				newBytes.addAll(bytes);
+				bytes = Parser.addIntToByteList(i, newBytes);
 			}
 		} else {
 			throw new SyntaxException("Comparing registers with other registers is not yet supported.");

@@ -106,4 +106,17 @@ public class Parser {
 		return newBytes;
 	}
 
+	public static List<Byte> addIntToByteList(int i, List<Byte> bytes) {
+		List<Byte> newBytes = new ArrayList<>(bytes);
+		byte a = (byte)(i & 0xFF);
+		byte b = (byte)((i >> 8) & 0xFF);
+		byte c = (byte)((i >> 16) & 0xFF);
+		byte d = (byte)((i >> 24) & 0xFF);
+		newBytes.add(a);
+		newBytes.add(b);
+		newBytes.add(c);
+		newBytes.add(d);
+		return newBytes;
+	}
+
 }

@@ -11,14 +11,22 @@ public enum Register {
 	BH(8, (byte)0xb7, List.of((byte)0x80, (byte)0xff)),
 	CH(8, (byte)0xb5, List.of((byte)0x80, (byte)0xfd)),
 	DH(8, (byte)0xb6, List.of((byte)0x80, (byte)0xfe)),
-	SP(16, (byte)0xbc, List.of((byte)0x83, (byte)0xfc)),
+	SP(16, (byte)0xbc, List.of((byte)0x81, (byte)0xfc)),
 	AX(16, (byte)0xb8, (byte)0x3d),
 	BX(16, (byte)0xbb, List.of((byte)0x81, (byte)0xfb)),
 	CX(16, (byte)0xb9, List.of((byte)0x81, (byte)0xf9)),
 	DX(16, (byte)0xba, List.of((byte)0x81, (byte)0xfa)),
 	BP(16, (byte)0xbd, List.of((byte)0x81, (byte)0xfd)),
 	SI(16, (byte)0xbe, List.of((byte)0x81, (byte)0xfe)),
-	DI(16, (byte)0xbf, List.of((byte)0x81, (byte)0xff));
+	DI(16, (byte)0xbf, List.of((byte)0x81, (byte)0xff)),
+	EAX(32, (byte)0xb8, (byte)0x3d),
+	EBX(32, (byte)0xbb, List.of((byte)0x81, (byte)0xfb)),
+	ECX(32, (byte)0xb9, List.of((byte)0x81, (byte)0xf9)),
+	EDX(32, (byte)0xba, List.of((byte)0x81, (byte)0xfa)),
+	EBP(32, (byte)0xbd, List.of((byte)0x81, (byte)0xfd)),
+	ESI(32, (byte)0xbe, List.of((byte)0x81, (byte)0xfe)),
+	EDI(32, (byte)0xbf, List.of((byte)0x81, (byte)0xff)),
+	ESP(32, (byte)0xbc, List.of((byte)0x81, (byte)0xfc));
 
 	private final int sizeBits;
 	private final List<Byte> movRegFromValBytes;

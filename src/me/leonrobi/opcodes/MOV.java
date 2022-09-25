@@ -30,6 +30,7 @@ public class MOV extends Opcode {
 		Register inRegister = null;
 		byte b = 0;
 		short s = 0;
+		int i = 0;
 		try {
 			inRegister = Register.valueOf(source.toUpperCase());
 			if (inRegister.sizeBits() != register.sizeBits())
@@ -40,6 +41,8 @@ public class MOV extends Opcode {
 					b = Parser.parseByte(source);
 				if (register.sizeBits() == 16)
 					s = Parser.parseShort(source);
+				if (register.sizeBits() == 32)
+					i = Parser.parseInt(source);
 			} catch (NumberFormatException nfe) {
 				throw new SyntaxException("Failed to parse register/value for '" + source + "'");
 			}
@@ -59,9 +62,15 @@ public class MOV extends Opcode {
 			} else if (register.sizeBits() == 16) {
 				List<Byte> newBytes = new ArrayList<>();
 				if (Parser.bits == 32 || Parser.bits == 64)
-					newBytes.add((byte)0x66);
+					newBytes.add((byte) 0x66);
 				newBytes.addAll(bytes);
 				bytes = Parser.addShortToByteList(s, newBytes);
+			} else if (register.sizeBits() == 32) {
+				List<Byte> newBytes = new ArrayList<>();
+				if (Parser.bits == 16)
+					newBytes.add((byte) 0x66);
+				newBytes.addAll(bytes);
+				bytes = Parser.addIntToByteList(i, newBytes);
 			}
 		} else {
 			throw new SyntaxException("Moving to registers from registers is not yet supported.");
