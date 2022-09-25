@@ -32,7 +32,7 @@ public class Main {
 		Opcode.add(new CMP());
 		Opcode.add(new DB());
 		Opcode.add(new UNTIL());
-		Opcode.add(new INC());
+		Opcode.add(new INC_DEC());
 
 		String outputFilePath = args[1];
 
