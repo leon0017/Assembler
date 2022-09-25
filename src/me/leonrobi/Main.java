@@ -33,6 +33,7 @@ public class Main {
 		Opcode.add(new DB());
 		Opcode.add(new UNTIL());
 		Opcode.add(new INC_DEC());
+		Opcode.add(new ADD());
 
 		String outputFilePath = args[1];
 

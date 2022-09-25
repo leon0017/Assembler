@@ -25,7 +25,7 @@ public class INC_DEC extends Opcode {
 		if (register.sizeBits() == 16 && Parser.bits == 32)
 			bytes.add((byte)0x66);
 
-		if (register.getOffset() == 0 && register != Register.AL && register != Register.AX && register != Register.EAX)
+		if (register.getOffset() == -1)
 			return null;
 		byte offset = (byte)(register.getOffset());
 		if (register.sizeBits() == 8)
