@@ -27,42 +27,35 @@ public class MOV extends Opcode {
 		}
 
 		String source = split[1].replaceAll(" ", "").replaceAll("\t", "");
-		Register outRegister = null;
+		Register inRegister = null;
 		byte b = 0;
+		short s = 0;
 		try {
-			outRegister = Register.valueOf(source.toUpperCase());
+			inRegister = Register.valueOf(source.toUpperCase());
+			if (inRegister.sizeBits() != register.sizeBits())
+				throw new SyntaxException("You cannot move registers with different sizes.");
 		} catch (IllegalArgumentException e) {
 			try {
-				b = Parser.parseByte(source);
+				if (register.sizeBits() == 8)
+					b = Parser.parseByte(source);
+				if (register.sizeBits() == 16)
+					s = Parser.parseShort(source);
 			} catch (NumberFormatException nfe) {
-				throw new SyntaxException("Failed to parse register/byte for '" + source + "'");
+				throw new SyntaxException("Failed to parse register/value for '" + source + "'");
 			}
 		}
 
 		List<Byte> bytes = new ArrayList<>();
 
-		if (outRegister == null) {
-			if (register.sizeBits() != 8)
-				throw new SyntaxException("Moving to registers larger than 8 bits is not yet supported.");
-			if (register == Register.AL)
-				bytes.add((byte)0xb0);
-			else if (register == Register.BL)
-				bytes.add((byte)0xb3);
-			else if (register == Register.CL)
-				bytes.add((byte)0xb1);
-			else if (register == Register.DL)
-				bytes.add((byte)0xb2);
-			else if (register == Register.AH)
-				bytes.add((byte)0xb4);
-			else if (register == Register.BH)
-				bytes.add((byte)0xb7);
-			else if (register == Register.CH)
-				bytes.add((byte)0xb5);
-			else if (register == Register.DH)
-				bytes.add((byte)0xb6);
-			else
+		if (inRegister == null) {
+			List<Byte> movRegFromValBytes = register.getMovRegFromValBytes();
+			if (movRegFromValBytes == null)
 				throw new SyntaxException("Register '" + register + "' does not support MOV.");
-			bytes.add(b);
+			bytes.addAll(movRegFromValBytes);
+			if (register.sizeBits() == 8)
+				bytes.add(b);
+			else if (register.sizeBits() == 16)
+				bytes = Parser.addShortToByteList(s, bytes);
 		} else {
 			throw new SyntaxException("Moving to registers from registers is not yet supported.");
 		}

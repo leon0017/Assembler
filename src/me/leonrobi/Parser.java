@@ -1,5 +1,6 @@
 package me.leonrobi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
@@ -87,6 +88,22 @@ public class Parser {
 		if (parsed > 0xFF)
 			throw new NumberFormatException("Byte out of range.");
 		return (byte)parsed;
+	}
+
+	public static short parseShort(String shortString) throws NumberFormatException {
+		int parsed = parseInt(shortString);
+		if (parsed > 0xFFFF)
+			throw new NumberFormatException("Short out of range.");
+		return (short)parsed;
+	}
+
+	public static List<Byte> addShortToByteList(short s, List<Byte> bytes) {
+		List<Byte> newBytes = new ArrayList<>(bytes);
+		byte first = (byte)(s & 0xFF);
+		byte second = (byte)((s >> 8) & 0xFF);
+		newBytes.add(first);
+		newBytes.add(second);
+		return newBytes;
 	}
 
 }
