@@ -5,6 +5,7 @@ import me.leonrobi.Parser;
 import me.leonrobi.Register;
 import me.leonrobi.SyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CMP extends Opcode {
@@ -51,10 +52,17 @@ public class CMP extends Opcode {
 
 		if (otherRegister == null) {
 			bytes = getCompareRegToValOpcode(register);
-			if (register.sizeBits() == 8)
-				bytes.add(b);
-			else if (register.sizeBits() == 16)
-				bytes = Parser.addShortToByteList(s, bytes);
+			if (register.sizeBits() == 8) {
+				List<Byte> newBytes = new ArrayList<>(bytes);
+				newBytes.add(b);
+				bytes = newBytes;
+			} else if (register.sizeBits() == 16) {
+				List<Byte> newBytes = new ArrayList<>();
+				if (Parser.bits == 32 || Parser.bits == 64)
+					newBytes.add((byte)0x66);
+				newBytes.addAll(bytes);
+				bytes = Parser.addShortToByteList(s, newBytes);
+			}
 		} else {
 			throw new SyntaxException("Comparing registers with other registers is not yet supported.");
 		}

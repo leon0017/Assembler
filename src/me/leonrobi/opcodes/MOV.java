@@ -52,10 +52,17 @@ public class MOV extends Opcode {
 			if (movRegFromValBytes == null)
 				throw new SyntaxException("Register '" + register + "' does not support MOV.");
 			bytes.addAll(movRegFromValBytes);
-			if (register.sizeBits() == 8)
-				bytes.add(b);
-			else if (register.sizeBits() == 16)
-				bytes = Parser.addShortToByteList(s, bytes);
+			if (register.sizeBits() == 8) {
+				List<Byte> newBytes = new ArrayList<>(bytes);
+				newBytes.add(b);
+				bytes = newBytes;
+			} else if (register.sizeBits() == 16) {
+				List<Byte> newBytes = new ArrayList<>();
+				if (Parser.bits == 32 || Parser.bits == 64)
+					newBytes.add((byte)0x66);
+				newBytes.addAll(bytes);
+				bytes = Parser.addShortToByteList(s, newBytes);
+			}
 		} else {
 			throw new SyntaxException("Moving to registers from registers is not yet supported.");
 		}
