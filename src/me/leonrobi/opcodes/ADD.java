@@ -1,5 +1,6 @@
 package me.leonrobi.opcodes;
 
+import me.leonrobi.DestSrcInstructionHelper;
 import me.leonrobi.Opcode;
 import me.leonrobi.SyntaxException;
 
@@ -16,6 +17,11 @@ public class ADD extends Opcode {
 
 	@Override
 	public List<Byte> handler(String lineContent, int lineNumber) throws SyntaxException {
-		return null;
+		DestSrcInstructionHelper destSrcInstructionHelper = new DestSrcInstructionHelper(
+			lineContent,
+			true,
+			DestSrcInstructionHelper.Type.ADD
+		);
+		return destSrcInstructionHelper.handle();
 	}
 }

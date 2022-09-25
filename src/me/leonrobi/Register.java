@@ -27,12 +27,20 @@ public enum Register {
 	EBP(32, 5, (byte)0xbd, List.of((byte)0x81, (byte)0xfd)),
 	ESI(32, 6, (byte)0xbe, List.of((byte)0x81, (byte)0xfe)),
 	EDI(32, 7, (byte)0xbf, List.of((byte)0x81, (byte)0xff)),
-	ESP(32, 4, (byte)0xbc, List.of((byte)0x81, (byte)0xfc));
+	ESP(32, 4, (byte)0xbc, List.of((byte)0x81, (byte)0xfc)),
+	RAX(64, 0, (byte)0xb8, (byte)0x3d),
+	RBX(64, 3, (byte)0xbb, List.of((byte)0x81, (byte)0xfb)),
+	RCX(64, 1, (byte)0xb9, List.of((byte)0x81, (byte)0xf9)),
+	RDX(64, 2, (byte)0xba, List.of((byte)0x81, (byte)0xfa)),
+	RBP(64, 5, (byte)0xbd, List.of((byte)0x81, (byte)0xfd)),
+	RSI(64, 6, (byte)0xbe, List.of((byte)0x81, (byte)0xfe)),
+	RDI(64, 7, (byte)0xbf, List.of((byte)0x81, (byte)0xff)),
+	RSP(64, 4, (byte)0xbc, List.of((byte)0x81, (byte)0xfc));
 
 	private final int sizeBits;
 	private final List<Byte> movRegFromValBytes;
 	private final List<Byte> cmpRegFromValBytes;
-	private int offset = 0;
+	private final int offset;
 
 	Register(int sizeBits, int offset, byte movRegFromValBytes, byte cmpRegFromValBytes) {
 		this.sizeBits = sizeBits;
@@ -69,6 +77,28 @@ public enum Register {
 		List<Byte> bytes = new ArrayList<>();
 		bytes.add((byte)0x83);
 		bytes.add((byte)(0xf8 + offset));
+		return bytes;
+	}
+
+	public List<Byte> getAddRegFromValBytes(boolean doSpecialByteOperation, Register register) {
+		List<Byte> bytes = new ArrayList<>();
+		if (doSpecialByteOperation) {
+			bytes.add((byte)0x83);
+			bytes.add((byte)(0xc0 + offset));
+			return bytes;
+		}
+		if (register == Register.AL || register == Register.AX || register == Register.EAX) {
+			if (register == Register.AL)
+				bytes.add((byte)0x04);
+			else
+				bytes.add((byte)0x05);
+			return bytes;
+		}
+		if (sizeBits == 8)
+			bytes.add((byte)0x80);
+		else
+			bytes.add((byte)0x81);
+		bytes.add((byte)(0xc0 + offset));
 		return bytes;
 	}
 

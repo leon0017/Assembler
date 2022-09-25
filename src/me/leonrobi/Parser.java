@@ -72,15 +72,22 @@ public class Parser {
 		return bytes.size();
 	}
 
-	public static int parseInt(String intString) throws NumberFormatException {
-		int parsed;
-		if (intString.startsWith("0x"))
-			parsed = Integer.parseInt(intString.substring(2), 16);
-		else if (intString.startsWith("0b"))
-			parsed = Integer.parseInt(intString.substring(2), 2);
+	public static long parseLong(String longString) throws NumberFormatException {
+		long parsed;
+		if (longString.startsWith("0x"))
+			parsed = Long.parseLong(longString.substring(2), 16);
+		else if (longString.startsWith("0b"))
+			parsed = Long.parseLong(longString.substring(2), 2);
 		else
-			parsed = Integer.parseInt(intString, 10);
+			parsed = Long.parseLong(longString, 10);
 		return parsed;
+	}
+
+	public static int parseInt(String intString) throws NumberFormatException {
+		long parsed = parseLong(intString);
+		if (parsed > Integer.MAX_VALUE)
+			throw new NumberFormatException("Integer out of range.");
+		return (int)parsed;
 	}
 
 	public static byte parseByte(String byteString) throws NumberFormatException {
@@ -116,6 +123,27 @@ public class Parser {
 		newBytes.add(b);
 		newBytes.add(c);
 		newBytes.add(d);
+		return newBytes;
+	}
+
+	public static List<Byte> addLongToByteList(long l, List<Byte> bytes) {
+		List<Byte> newBytes = new ArrayList<>(bytes);
+		byte a = (byte)(l & 0xFF);
+		byte b = (byte)((l >> 8) & 0xFF);
+		byte c = (byte)((l >> 16) & 0xFF);
+		byte d = (byte)((l >> 24) & 0xFF);
+		byte e = (byte)((l >> 32) & 0xFF);
+		byte f = (byte)((l >> 40) & 0xFF);
+		byte g = (byte)((l >> 48) & 0xFF);
+		byte h = (byte)((l >> 56) & 0xFF);
+		newBytes.add(a);
+		newBytes.add(b);
+		newBytes.add(c);
+		newBytes.add(d);
+		newBytes.add(e);
+		newBytes.add(f);
+		newBytes.add(g);
+		newBytes.add(h);
 		return newBytes;
 	}
 

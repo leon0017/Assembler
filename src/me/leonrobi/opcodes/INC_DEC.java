@@ -15,23 +15,46 @@ public class INC_DEC extends Opcode {
 		return new String[] {"inc","dec"};
 	}
 
-	private List<Byte> getCode(Register register, boolean dec) {
+	private List<Byte> getCode(Register register, boolean dec) throws SyntaxException {
 		List<Byte> bytes = new ArrayList<>();
 
-		if (register.sizeBits() == 8)
-			bytes.add((byte)0xfe);
-		if (register.sizeBits() == 32 && Parser.bits == 16)
-			bytes.add((byte)0x66);
-		if (register.sizeBits() == 16 && Parser.bits != 16)
-			bytes.add((byte)0x66);
+		byte offset = (byte) register.getOffset();
 
-		if (register.getOffset() == -1)
-			return null;
-		byte offset = (byte)(register.getOffset());
-		if (register.sizeBits() == 8)
-			offset += (byte)0xc0;
-		else
-			offset += (byte)0x40;
+		if (register.sizeBits() == 8) {
+			bytes.add((byte) 0xfe);
+			offset += 0xc0;
+		}
+
+		if (register.sizeBits() == 16) {
+			if (Parser.bits != 16)
+				bytes.add((byte) 0x66);
+			if (Parser.bits == 64) {
+				bytes.add((byte) 0xff);
+				offset += 0xc0;
+			} else {
+				offset += 0x40;
+			}
+		}
+
+		else if (register.sizeBits() == 32) {
+			if (Parser.bits == 16)
+				bytes.add((byte) 0x66);
+			if (Parser.bits == 64) {
+				bytes.add((byte) 0xff);
+				offset += 0xc0;
+			} else {
+				offset += 0x40;
+			}
+		}
+
+		else if (register.sizeBits() == 64) {
+			if (Parser.bits != 64)
+				throw new SyntaxException("You cannot use 64-bit registers in non 64-bit mode.");
+			bytes.add((byte) 0x48);
+			bytes.add((byte) 0xff);
+			offset += 0xc0;
+		}
+
 		if (dec)
 			offset += (byte)8;
 		bytes.add(offset);
