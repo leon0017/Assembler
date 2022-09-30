@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Leon" type="Application" factoryName="Application">
+  <configuration default="false" name="Testing" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="me.leonrobi.Main" />
     <module name="Assembler" />
-    <option name="PROGRAM_PARAMETERS" value="C:\Users\leonr\tmp\test.asm C:\Users\leonr\tmp\test.asm.obj" />
+    <option name="PROGRAM_PARAMETERS" value="test.asm test.bin" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

@@ -24,6 +24,9 @@ public class Main {
 		Opcode.add(new NOP());
 		Opcode.add(new BITS());
 		Opcode.add(new CLI());
+		Opcode.add(new CLD());
+		Opcode.add(new STD());
+		Opcode.add(new STI());
 		Opcode.add(new HLT());
 		Opcode.add(new AAA());
 		Opcode.add(new JMP());
@@ -31,9 +34,13 @@ public class Main {
 		Opcode.add(new INT());
 		Opcode.add(new CMP());
 		Opcode.add(new DB());
+		Opcode.add(new DW());
+		Opcode.add(new DD());
+		Opcode.add(new DQ());
 		Opcode.add(new UNTIL());
 		Opcode.add(new INC_DEC());
 		Opcode.add(new ADD());
+		Opcode.add(new TIMES());
 
 		String outputFilePath = args[1];
 

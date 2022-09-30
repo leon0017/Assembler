@@ -176,4 +176,17 @@ public enum Register {
 		else
 			return Register.valueOf("E" + register.toString().substring(1));
 	}
+
+	public static String toRm(Register register) {
+		return switch (register) {
+			case AL, AX, EAX, RAX, R8B, R8W, R8D, R8 -> "000";
+			case CL, CX, ECX, RCX, R9B, R9W, R9D, R9 -> "001";
+			case DL, DX, EDX, RDX, R10B, R10W, R10D, R10 -> "010";
+			case BL, BX, EBX, RBX, R11B, R11W, R11D, R11 -> "011";
+			case AH, SP, ESP, RSP, R12B, R12W, R12D, R12 -> "100";
+			case CH, BP, EBP, RBP, R13B, R13W, R13D, R13 -> "101";
+			case DH, SI, ESI, RSI, R14B, R14W, R14D, R14 -> "110";
+			case BH, DI, EDI, RDI, R15B, R15W, R15D, R15 -> "111";
+		};
+	}
 }

@@ -85,7 +85,7 @@ public class Parser {
 
 	public static int parseInt(String intString) throws NumberFormatException {
 		long parsed = parseLong(intString);
-		if (parsed > Integer.MAX_VALUE)
+		if (parsed > 0xFFFFFFFFL)
 			throw new NumberFormatException("Integer out of range.");
 		return (int)parsed;
 	}
@@ -145,6 +145,13 @@ public class Parser {
 		newBytes.add(g);
 		newBytes.add(h);
 		return newBytes;
+	}
+
+	//https://www.sandpile.org/x86/opc_rm16.htm
+	//https://www.sandpile.org/x86/opc_rm.htm
+	// TODO: Implement for other MOD types (currently only 11 is implemented)
+	public static byte encodeModRm(Register src, Register dst) {
+		return (byte)Integer.parseInt("11" + Register.toRm(src) + Register.toRm(dst), 2);
 	}
 
 }

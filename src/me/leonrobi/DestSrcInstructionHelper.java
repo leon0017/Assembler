@@ -65,10 +65,10 @@ public class DestSrcInstructionHelper {
 			}
 		}
 
-		List<Byte> bytes = new ArrayList<>();
-
 		if (register == null)
 			throw new RuntimeException("64-bit register --> 32-bit register is NULL.");
+
+		List<Byte> bytes = new ArrayList<>();
 
 		if (sourceRegister == null) {
 			List<Byte> _bytes = null;
@@ -128,7 +128,20 @@ public class DestSrcInstructionHelper {
 				}
 			}
 		} else {
-			throw new SyntaxException("Having a register as a source operand is not yet supported.");
+			byte[] bytesPrefix = Register.getBytePrefix(register);
+
+			if (bytesPrefix != null) {
+				for (byte bi : bytesPrefix)
+					bytes.add(bi);
+			}
+
+			switch (type) {
+				case MOV -> bytes.add(register.sizeBits() == 8 ? (byte) 0x88 : (byte) 0x89);
+				/*case CMP -> _bytes = register.getCmpRegFromValBytes(doSpecialByteOperation);
+				case ADD -> _bytes = register.getAddRegFromValBytes(doSpecialByteOperation, register);*/
+			}
+
+			bytes.add(Parser.encodeModRm(sourceRegister, register));
 		}
 
 		return bytes;
