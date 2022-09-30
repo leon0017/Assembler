@@ -83,7 +83,7 @@ public class JMP extends Opcode {
 
 		List<Byte> bytes = new ArrayList<>();
 
-		if (offset <= 127 && offset >= -127) { // Short Jump
+		if (offset < 127 && offset > -127) { // Short Jump
 			byte offsetByte = (byte) (offset & 0xff);
 			bytes.add(jmpType.getShortJumpOpcode());
 			if (offset <= 0) // Backwards OR same location

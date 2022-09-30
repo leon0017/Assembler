@@ -34,6 +34,7 @@ public class Main {
 		Opcode.add(new UNTIL());
 		Opcode.add(new INC_DEC());
 		Opcode.add(new ADD());
+		Opcode.add(new TIMES());
 
 		String outputFilePath = args[1];
 
