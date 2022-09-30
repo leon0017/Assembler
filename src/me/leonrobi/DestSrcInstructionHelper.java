@@ -50,10 +50,15 @@ public class DestSrcInstructionHelper {
 				else if (register.sizeBits() == 32)
 					i = Parser.parseInt(source);
 				else if (register.sizeBits() == 64) {
-					if (type == Type.MOV)
+					if (type == Type.MOV) {
 						l = Parser.parseLong(source);
-					else
+						if (l <= 0xFFFFFFFFL) {
+							i = Parser.parseInt(source);
+							register = Register.get32Bit(register);
+						}
+					} else {
 						i = Parser.parseInt(source);
+					}
 				}
 			} catch (NumberFormatException nfe) {
 				throw new SyntaxException("Failed to parse register/value for '" + source + "' - " + nfe.getMessage());
@@ -62,13 +67,16 @@ public class DestSrcInstructionHelper {
 
 		List<Byte> bytes = new ArrayList<>();
 
+		if (register == null)
+			throw new RuntimeException("64-bit register --> 32-bit register is NULL.");
+
 		if (sourceRegister == null) {
 			List<Byte> _bytes = null;
 			boolean doSpecialByteOperation = false;
 			if (shorterByteOperation) {
 				if (register.sizeBits() == 16)
 					doSpecialByteOperation = s <= 127 && s >= -127;
-				else if (register.sizeBits() == 32)
+				else if (register.sizeBits() == 32 || register.sizeBits() == 64)
 					doSpecialByteOperation = i <= 127 && i >= -127;
 			}
 			switch (type) {
@@ -79,15 +87,22 @@ public class DestSrcInstructionHelper {
 			if (_bytes == null)
 				throw new SyntaxException("Register '" + register + "' does not support this operation.");
 			bytes.addAll(_bytes);
+
+			List<Byte> __bytes = new ArrayList<>();
+
+			byte[] bytesPrefix = Register.getBytePrefix(register);
+
+			if (bytesPrefix != null) {
+				for (byte bi : bytesPrefix)
+					__bytes.add(bi);
+			}
+
+			__bytes.addAll(bytes);
+
 			if (register.sizeBits() == 8) {
-				List<Byte> __bytes = new ArrayList<>(bytes);
 				__bytes.add(b);
 				bytes = __bytes;
 			} else if (register.sizeBits() == 16) {
-				List<Byte> __bytes = new ArrayList<>();
-				if (Parser.bits == 32 || Parser.bits == 64)
-					__bytes.add((byte)0x66);
-				__bytes.addAll(bytes);
 				if (doSpecialByteOperation) {
 					__bytes.add((byte) s);
 					bytes = __bytes;
@@ -95,10 +110,6 @@ public class DestSrcInstructionHelper {
 					bytes = Parser.addShortToByteList(s, __bytes);
 				}
 			} else if (register.sizeBits() == 32) {
-				List<Byte> __bytes = new ArrayList<>();
-				if (Parser.bits == 16)
-					__bytes.add((byte)0x66);
-				__bytes.addAll(bytes);
 				if (doSpecialByteOperation) {
 					__bytes.add((byte) i);
 					bytes = __bytes;
@@ -106,11 +117,6 @@ public class DestSrcInstructionHelper {
 					bytes = Parser.addIntToByteList(i, __bytes);
 				}
 			} else if (register.sizeBits() == 64) {
-				List<Byte> __bytes = new ArrayList<>();
-				if (Parser.bits != 64)
-					throw new SyntaxException("You cannot use 64-bit registers in non 64-bit mode.");
-				__bytes.add((byte)0x48);
-				__bytes.addAll(bytes);
 				if (doSpecialByteOperation) {
 					__bytes.add((byte) i);
 					bytes = __bytes;
