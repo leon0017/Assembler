@@ -8,25 +8,25 @@ import java.util.List;
 
 public class TIMES extends Opcode {
 
-    @Override
-    public String[] identifiers() {
-        return new String[] {
-                "times"
-        };
-    }
+	@Override
+	public String[] identifiers() {
+		return new String[] {
+			"times"
+		};
+	}
 
-    @Override
-    public List<Byte> handler(String lineContent, int lineNumber) throws SyntaxException {
-        String[] split = lineContent.split(" ");
-        int until;
-        try {
-            until = Parser.parseInt(split[1]);
-        } catch (NumberFormatException e) {
-            throw new SyntaxException("Failed to parse integer '" + split[1] + "' due to '" + e.getMessage() + "'");
-        }
-        String instruction = lineContent.substring(split[0].length() + split[1].length() + 2);
-        for (long i = 0; i < until; i++)
-            Parser.parseLine(instruction, lineNumber, true);
-        return null;
-    }
+	@Override
+	public List<Byte> handler(String lineContent, int lineNumber) throws SyntaxException {
+		String[] split = lineContent.split(" ");
+		int until;
+		try {
+			until = Parser.parseInt(split[1]);
+		} catch (NumberFormatException e) {
+			throw new SyntaxException("Failed to parse integer '" + split[1] + "' due to '" + e.getMessage() + "'");
+		}
+		String instruction = lineContent.substring(split[0].length() + split[1].length() + 2);
+		for (long i = 0; i < until; i++)
+			Parser.parseLine(instruction, lineNumber, true);
+		return null;
+	}
 }
