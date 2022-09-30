@@ -43,7 +43,23 @@ public enum Register {
 	R12B(8, 4, (byte)0xb4, List.of((byte)0x80, (byte)0xfc), true),
 	R13B(8, 5, (byte)0xb5, List.of((byte)0x80, (byte)0xfd), true),
 	R14B(8, 6, (byte)0xb6, List.of((byte)0x80, (byte)0xfe), true),
-	R15B(8, 7, (byte)0xb7, List.of((byte)0x80, (byte)0xff), true),;
+	R15B(8, 7, (byte)0xb7, List.of((byte)0x80, (byte)0xff), true),
+	R8W(16, 0, (byte)0xb8, List.of((byte)0x80, (byte)0xf8), true),
+	R9W(16, 1, (byte)0xb9, List.of((byte)0x80, (byte)0xf9), true),
+	R10W(16, 2, (byte)0xba, List.of((byte)0x80, (byte)0xfa), true),
+	R11W(16, 3, (byte)0xbb, List.of((byte)0x80, (byte)0xfb), true),
+	R12W(16, 4, (byte)0xbc, List.of((byte)0x80, (byte)0xfc), true),
+	R13W(16, 5, (byte)0xbd, List.of((byte)0x80, (byte)0xfd), true),
+	R14W(16, 6, (byte)0xbe, List.of((byte)0x80, (byte)0xfe), true),
+	R15W(16, 7, (byte)0xbf, List.of((byte)0x80, (byte)0xff), true),
+	R8D(32, 0, (byte)0xb8, List.of((byte)0x80, (byte)0xf8), true),
+	R9D(32, 1, (byte)0xb9, List.of((byte)0x80, (byte)0xf9), true),
+	R10D(32, 2, (byte)0xba, List.of((byte)0x80, (byte)0xfa), true),
+	R11D(32, 3, (byte)0xbb, List.of((byte)0x80, (byte)0xfb), true),
+	R12D(32, 4, (byte)0xbc, List.of((byte)0x80, (byte)0xfc), true),
+	R13D(32, 5, (byte)0xbd, List.of((byte)0x80, (byte)0xfd), true),
+	R14D(32, 6, (byte)0xbe, List.of((byte)0x80, (byte)0xfe), true),
+	R15D(32, 7, (byte)0xbf, List.of((byte)0x80, (byte)0xff), true),;
 
 	private final int sizeBits;
 	private final List<Byte> movRegFromValBytes;
