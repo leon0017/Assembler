@@ -85,7 +85,7 @@ public class Parser {
 
 	public static int parseInt(String intString) throws NumberFormatException {
 		long parsed = parseLong(intString);
-		if (parsed > Integer.MAX_VALUE)
+		if (parsed > 0xFFFFFFFFL)
 			throw new NumberFormatException("Integer out of range.");
 		return (int)parsed;
 	}
