@@ -59,7 +59,15 @@ public enum Register {
 	R12D(32, 4, (byte)0xbc, List.of((byte)0x80, (byte)0xfc), true),
 	R13D(32, 5, (byte)0xbd, List.of((byte)0x80, (byte)0xfd), true),
 	R14D(32, 6, (byte)0xbe, List.of((byte)0x80, (byte)0xfe), true),
-	R15D(32, 7, (byte)0xbf, List.of((byte)0x80, (byte)0xff), true),;
+	R15D(32, 7, (byte)0xbf, List.of((byte)0x80, (byte)0xff), true),
+	R8(64, 0, (byte)0xb8, List.of((byte)0x81, (byte)0xf8), true),
+	R9(64, 1, (byte)0xb9, List.of((byte)0x81, (byte)0xf9), true),
+	R10(64, 2, (byte)0xba, List.of((byte)0x81, (byte)0xfa), true),
+	R11(64, 3, (byte)0xbb, List.of((byte)0x81, (byte)0xfb), true),
+	R12(64, 4, (byte)0xbc, List.of((byte)0x81, (byte)0xfc), true),
+	R13(64, 5, (byte)0xbd, List.of((byte)0x81, (byte)0xfd), true),
+	R14(64, 6, (byte)0xbe, List.of((byte)0x81, (byte)0xfe), true),
+	R15(64, 7, (byte)0xbf, List.of((byte)0x81, (byte)0xff), true);
 
 	private final int sizeBits;
 	private final List<Byte> movRegFromValBytes;
