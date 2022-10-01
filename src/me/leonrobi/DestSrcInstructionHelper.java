@@ -70,9 +70,7 @@ public class DestSrcInstructionHelper {
 					throw new SyntaxException("Failed to parse register/value/label for '" + source + "' - " + nfe.getMessage());
 				if (type != Type.MOV)
 					throw new SyntaxException("You cannot do this operation on a label.");
-				/* TODO: add ORG offset as well. */
 				long labelOffset = label.byteOffset() + Parser.orgOffset;
-				System.out.printf("%x%n", labelOffset);
 				int bitsRequired = Parser.valueToBits(labelOffset);
 				if (bitsRequired > register.sizeBits())
 					throw new SyntaxException("Cannot fit label address '" + labelOffset + "' into register '" + register + "'.");

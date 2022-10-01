@@ -41,6 +41,7 @@ public class Main {
 		Opcode.add(new ADD());
 		Opcode.add(new SUB());
 		Opcode.add(new ORG());
+		Opcode.add(new SETPOS());
 
 		String outputFilePath = args[1];
 
