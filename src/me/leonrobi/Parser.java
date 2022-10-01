@@ -154,4 +154,15 @@ public class Parser {
 		return (byte)Integer.parseInt("11" + Register.toRm(src) + Register.toRm(dst), 2);
 	}
 
+	public static int valueToBits(long l) {
+		if (l <= 0xFF)
+			return 8;
+		else if (l <= 0xFFFF)
+			return 16;
+		else if (l <= 0xFFFFFFFFL)
+			return 32;
+		else
+			return 64;
+	}
+
 }

@@ -18,7 +18,8 @@ public class CMP extends Opcode {
 		DestSrcInstructionHelper destSrcInstructionHelper = new DestSrcInstructionHelper(
 			lineContent,
 			true,
-			DestSrcInstructionHelper.Type.CMP
+			DestSrcInstructionHelper.Type.CMP,
+			lineNumber
 		);
 		return destSrcInstructionHelper.handle();
 	}

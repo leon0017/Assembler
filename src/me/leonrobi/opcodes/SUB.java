@@ -20,7 +20,8 @@ public class SUB extends Opcode {
 		DestSrcInstructionHelper destSrcInstructionHelper = new DestSrcInstructionHelper(
 			lineContent,
 			true,
-			DestSrcInstructionHelper.Type.SUB
+			DestSrcInstructionHelper.Type.SUB,
+			lineNumber
 		);
 		return destSrcInstructionHelper.handle();
 	}

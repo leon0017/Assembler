@@ -20,7 +20,8 @@ public class ADD extends Opcode {
 		DestSrcInstructionHelper destSrcInstructionHelper = new DestSrcInstructionHelper(
 			lineContent,
 			true,
-			DestSrcInstructionHelper.Type.ADD
+			DestSrcInstructionHelper.Type.ADD,
+			lineNumber
 		);
 		return destSrcInstructionHelper.handle();
 	}

@@ -74,6 +74,24 @@ public class Reader {
 				removeComments(modString);
 				if (!isEmptyLine(modString))
 					removeStartSpaces(modString);
+				String[] split = modString.string().split(" ");
+				if (split[0].equalsIgnoreCase("times")) {
+					try {
+						if (split.length == 1)
+							throw new Exception("Amount not specified.");
+						if (split.length == 2)
+							throw new Exception("Instruction not specified.");
+						int times = Parser.parseInt(split[1]);
+						String instruction = lineContent.substring(split[0].length() + split[1].length() + 2);
+						for (int i = 0; i < times; i++)
+							lines.add(new Line(instruction, +currentLineNumber));
+						continue;
+					} catch (Exception e) {
+						System.out.println("ERROR on line " + (currentLineNumber+1) + " - \"" + e.getMessage() + "\"");
+						System.exit(1);
+						return;
+					}
+				}
 				lines.add(new Line(modString.string(), ++currentLineNumber));
 			}
 		} catch (FileNotFoundException e) {

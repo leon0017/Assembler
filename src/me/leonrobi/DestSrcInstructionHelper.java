@@ -15,11 +15,13 @@ public class DestSrcInstructionHelper {
 	private final String lineContent;
 	private final boolean shorterByteOperation;
 	private final Type type;
+	private final int startingLine;
 
-	public DestSrcInstructionHelper(String lineContent, boolean shorterByteOperation, Type type) {
+	public DestSrcInstructionHelper(String lineContent, boolean shorterByteOperation, Type type, int startingLine) {
 		this.lineContent = lineContent;
 		this.shorterByteOperation = shorterByteOperation;
 		this.type = type;
+		this.startingLine = startingLine;
 	}
 
 	public List<Byte> handle() throws SyntaxException {
@@ -38,6 +40,7 @@ public class DestSrcInstructionHelper {
 		short s = 0;
 		int i = 0;
 		long l = 0;
+		Label label;
 		try {
 			sourceRegister = Register.valueOf(source.toUpperCase());
 			if (sourceRegister.sizeBits() != register.sizeBits())
@@ -62,7 +65,25 @@ public class DestSrcInstructionHelper {
 					}
 				}
 			} catch (NumberFormatException nfe) {
-				throw new SyntaxException("Failed to parse register/value for '" + source + "' - " + nfe.getMessage());
+				label = Label.get(source, startingLine);
+				if (label == null)
+					throw new SyntaxException("Failed to parse register/value/label for '" + source + "' - " + nfe.getMessage());
+				if (type != Type.MOV)
+					throw new SyntaxException("You cannot do this operation on a label.");
+				/* TODO: add ORG offset as well. */
+				long labelOffset = label.byteOffset();
+				System.out.printf("%x%n", labelOffset);
+				int bitsRequired = Parser.valueToBits(labelOffset);
+				if (bitsRequired > register.sizeBits())
+					throw new SyntaxException("Cannot fit label address '" + labelOffset + "' into register '" + register + "'.");
+				if (register.sizeBits() == 8)
+					b = (byte) labelOffset;
+				else if (register.sizeBits() == 16)
+					s = (short) labelOffset;
+				else if (register.sizeBits() == 32)
+					i = (int) labelOffset;
+				else if (register.sizeBits() == 64)
+					l = labelOffset;
 			}
 		}
 

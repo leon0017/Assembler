@@ -18,7 +18,8 @@ public class MOV extends Opcode {
 		DestSrcInstructionHelper destSrcInstructionHelper = new DestSrcInstructionHelper(
 			lineContent,
 			false,
-			DestSrcInstructionHelper.Type.MOV
+			DestSrcInstructionHelper.Type.MOV,
+			lineNumber
 		);
 		return destSrcInstructionHelper.handle();
 	}
