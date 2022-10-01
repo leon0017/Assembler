@@ -9,7 +9,8 @@ public class DestSrcInstructionHelper {
 		ADD,
 		CMP,
 		MOV,
-		SUB
+		SUB,
+		XOR
 	}
 
 	private final String lineContent;
@@ -106,6 +107,8 @@ public class DestSrcInstructionHelper {
 					(byte) 0xc0, (byte) 0x04, register.sizeBits() == 8 ? (byte) 0x80 : (byte) 0x81);
 				case SUB -> _bytes = register.getMathRegFromValBytes(doSpecialByteOperation, register,
 					(byte) 0xe8, (byte) 0x2c, register.sizeBits() == 8 ? (byte) 0x80 : (byte) 0x81);
+				case XOR -> _bytes = register.getMathRegFromValBytes(doSpecialByteOperation, register,
+					(byte) 0xf0, (byte) 0x34, register.sizeBits() == 8 ? (byte) 0x80 : (byte) 0x81);
 			}
 			if (_bytes == null)
 				throw new SyntaxException("Register '" + register + "' does not support this operation.");
@@ -163,6 +166,7 @@ public class DestSrcInstructionHelper {
 				case CMP -> bytes.add(register.sizeBits() == 8 ? (byte) 0x38 : (byte) 0x39);
 				case ADD -> bytes.add(register.sizeBits() == 8 ? (byte) 0x00 : (byte) 0x01);
 				case SUB -> bytes.add(register.sizeBits() == 8 ? (byte) 0x28 : (byte) 0x29);
+				case XOR -> bytes.add(register.sizeBits() == 8 ? (byte) 0x30 : (byte) 0x31);
 			}
 
 			bytes.add(Parser.encodeModRm(sourceRegister, register));
