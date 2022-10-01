@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Parser {
 	public static long currentByteOffset = 0x0;
+	public static long orgOffset = 0x0;
 	public static int bits = 16;
 
 	private enum HandleOpcodeResultEnum {

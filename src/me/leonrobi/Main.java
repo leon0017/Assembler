@@ -40,6 +40,7 @@ public class Main {
 		Opcode.add(new INC_DEC());
 		Opcode.add(new ADD());
 		Opcode.add(new SUB());
+		Opcode.add(new ORG());
 
 		String outputFilePath = args[1];
 
