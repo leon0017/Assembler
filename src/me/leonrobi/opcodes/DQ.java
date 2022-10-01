@@ -24,7 +24,7 @@ public class DQ extends Opcode {
 			throw new SyntaxException("Failed to parse int '" + longString + "' due to '" + e.getMessage() + "'");
 		}
 		List<Byte> bytes = new ArrayList<>();
-		Parser.addLongToByteList(l, bytes);
+		bytes = Parser.addLongToByteList(l, bytes);
 		return bytes;
 	}
 }

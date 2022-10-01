@@ -24,7 +24,7 @@ public class DW extends Opcode {
 			throw new SyntaxException("Failed to parse short '" + shortString + "' due to '" + e.getMessage() + "'");
 		}
 		List<Byte> bytes = new ArrayList<>();
-		Parser.addShortToByteList(s, bytes);
+		bytes = Parser.addShortToByteList(s, bytes);
 		return bytes;
 	}
 }

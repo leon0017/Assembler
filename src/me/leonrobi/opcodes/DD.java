@@ -24,7 +24,7 @@ public class DD extends Opcode {
 			throw new SyntaxException("Failed to parse int '" + intString + "' due to '" + e.getMessage() + "'");
 		}
 		List<Byte> bytes = new ArrayList<>();
-		Parser.addIntToByteList(i, bytes);
+		bytes = Parser.addIntToByteList(i, bytes);
 		return bytes;
 	}
 }
