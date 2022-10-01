@@ -8,7 +8,8 @@ public class DestSrcInstructionHelper {
 	public enum Type {
 		ADD,
 		CMP,
-		MOV
+		MOV,
+		SUB
 	}
 
 	private final String lineContent;
@@ -82,7 +83,10 @@ public class DestSrcInstructionHelper {
 			switch (type) {
 				case MOV -> _bytes = register.getMovRegFromValBytes();
 				case CMP -> _bytes = register.getCmpRegFromValBytes(doSpecialByteOperation);
-				case ADD -> _bytes = register.getAddRegFromValBytes(doSpecialByteOperation, register);
+				case ADD -> _bytes = register.getMathRegFromValBytes(doSpecialByteOperation, register,
+					(byte) 0xc0, (byte) 0x04, register.sizeBits() == 8 ? (byte) 0x80 : (byte) 0x81);
+				case SUB -> _bytes = register.getMathRegFromValBytes(doSpecialByteOperation, register,
+					(byte) 0xe8, (byte) 0x2c, register.sizeBits() == 8 ? (byte) 0x80 : (byte) 0x81);
 			}
 			if (_bytes == null)
 				throw new SyntaxException("Register '" + register + "' does not support this operation.");
@@ -137,8 +141,9 @@ public class DestSrcInstructionHelper {
 
 			switch (type) {
 				case MOV -> bytes.add(register.sizeBits() == 8 ? (byte) 0x88 : (byte) 0x89);
-				/*case CMP -> _bytes = register.getCmpRegFromValBytes(doSpecialByteOperation);
-				case ADD -> _bytes = register.getAddRegFromValBytes(doSpecialByteOperation, register);*/
+				case CMP -> bytes.add(register.sizeBits() == 8 ? (byte) 0x38 : (byte) 0x39);
+				case ADD -> bytes.add(register.sizeBits() == 8 ? (byte) 0x00 : (byte) 0x01);
+				case SUB -> bytes.add(register.sizeBits() == 8 ? (byte) 0x28 : (byte) 0x29);
 			}
 
 			bytes.add(Parser.encodeModRm(sourceRegister, register));

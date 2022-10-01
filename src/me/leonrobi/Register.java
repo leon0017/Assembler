@@ -116,25 +116,22 @@ public enum Register {
 		return bytes;
 	}
 
-	public List<Byte> getAddRegFromValBytes(boolean doSpecialByteOperation, Register register) {
+	public List<Byte> getMathRegFromValBytes(boolean doSpecialByteOperation, Register register, byte offset, byte aRegStart, byte operationCode) {
 		List<Byte> bytes = new ArrayList<>();
 		if (doSpecialByteOperation) {
 			bytes.add((byte)0x83);
-			bytes.add((byte)(0xc0 + offset));
+			bytes.add((byte)(offset + this.offset));
 			return bytes;
 		}
 		if (register == Register.AL || register == Register.AX || register == Register.EAX || register == Register.RAX) {
 			if (register == Register.AL)
-				bytes.add((byte)0x04);
+				bytes.add(aRegStart);
 			else
-				bytes.add((byte)0x05);
+				bytes.add((byte)(aRegStart + 0x01));
 			return bytes;
 		}
-		if (sizeBits == 8)
-			bytes.add((byte)0x80);
-		else
-			bytes.add((byte)0x81);
-		bytes.add((byte)(0xc0 + offset));
+		bytes.add(operationCode);
+		bytes.add((byte)(offset + this.offset));
 		return bytes;
 	}
 
