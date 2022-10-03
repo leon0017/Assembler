@@ -7,12 +7,13 @@ start:
 
     xor bx, bx
     xor dx, dx
+    mov dh, -1
 loop:
     inc bx
+    inc dh
     mov bp, testString
     mov cx, 12
     call printStr
-    inc dh
     cmp bx, 0xf
     je done
     jmp loop
