@@ -44,6 +44,7 @@ public class Main {
 		Opcode.add(new SETPOS());
 		Opcode.add(new XOR());
 		Opcode.add(new CALL());
+		Opcode.add(new RET());
 
 		String outputFilePath = args[1];
 
