@@ -8,11 +8,11 @@ start:
     xor bx, bx
     xor dx, dx
     mov dh, -1
+    mov bp, testString
+    mov cx, 12
 loop:
     inc bx
     inc dh
-    mov bp, testString
-    mov cx, 12
     call printStr
     cmp bx, 0xf
     je done
