@@ -33,6 +33,13 @@ public class CALL extends Opcode {
 			} else {
 				throw new SyntaxException("Offset too distant. Offset=" + offset);
 			}
+		} else {
+			if (offset < 2147483641 && offset > -2147483646) {
+				bytes.add((byte) 0xe8);
+				bytes = Parser.addIntToByteList((int) (offset - 5), bytes);
+			} else {
+				throw new SyntaxException("Offset too distant. Offset=" + offset);
+			}
 		}
 		return bytes;
 	}
